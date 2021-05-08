@@ -40,7 +40,7 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
+          @keyup.enter="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -51,7 +51,7 @@
         :loading="loading"
         type="primary"
         style="width: 100%; margin-bottom: 30px;"
-        @click.native.prevent="handleLogin"
+        @click.prevent="handleLogin"
         >Login</el-button
       >
 
@@ -66,10 +66,11 @@
 <script lang="ts">
   import { validUsername } from '@/utils/validate';
   import type Form from 'element-plus/lib/el-form';
-  import { defineComponent, nextTick, ref, watch } from 'vue';
+  import { defineComponent, nextTick, reactive, ref, watch } from 'vue';
   import { useRoute, useRouter } from 'vue-router';
   import { useStore } from 'vuex';
-  import { RuleItem } from 'async-validator';
+  import type { Rules } from 'async-validator';
+
   export default defineComponent({
     name: 'Login',
     setup() {
@@ -78,28 +79,27 @@
         password: '111111',
       });
 
-      const validateUsername: RuleItem['validator'] = (rule, value, callback) => {
+      const validateUsername = (_: Rules, value: string, callback: (error: string | string[] | void) => void,) => {
         if (!validUsername(value)) {
           callback('Please enter the correct user name');
         } else {
           callback();
         }
       };
-      const validatePassword: RuleItem['validator'] = (rule, value, callback) => {
+
+      const validatePassword = (_: Rules, value: string|any[], callback: (error: string | string[] | void) => void) => {
         if (value.length < 6) {
           callback('The password can not be less than 6 digits');
         } else {
           callback();
         }
+        return false;
       };
-      const loginRules = ref<Rules>({
+
+      const loginRules = reactive<any>({
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       });
-
-      interface Rules {
-        [field: string]: (RuleItem & { trigger?: string }) | (RuleItem & { trigger?: string })[];
-      }
 
       const loading = ref(false);
       const passwordType = ref('password');

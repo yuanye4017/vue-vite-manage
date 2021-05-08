@@ -1,3 +1,5 @@
+import type { AppRouteModule } from './types';
+import type { RouteRecordRaw } from "vue-router";
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 /* Layout */
@@ -27,19 +29,22 @@ import Layout from '@/layout/index.vue';
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
+export const constantRoutes: AppRouteModule[] = [
   {
     path: '/login',
+    name: 'Login',
     component: () => import('@/views/login/index.vue'),
   },
 
   {
     path: '/404',
+    name: 'Error',
     component: () => import('@/views/404.vue'),
   },
 
   {
     path: '/',
+    name: 'Dashboard',
     component: Layout,
     redirect: '/dashboard',
     children: [
@@ -76,6 +81,7 @@ export const constantRoutes = [
 
   {
     path: '/form',
+    name: 'Form',
     component: Layout,
     children: [
       {
@@ -145,27 +151,15 @@ export const constantRoutes = [
     ],
   },
 
-  {
-    path: '/external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/cereschen/vue3-admin-vite-template',
-        meta: { title: 'External Link', icon: 'link' },
-      },
-    ],
-  },
-
   // 404 page must be placed at the end !!!
-  { path: '/:pathMatch(.*)*', redirect: '/404' },
+  { path: '/:pathMatch(.*)*',name: 'PathMatch', redirect: '/404' },
 ];
 
 const _createRouter = () =>
   createRouter({
     history: createWebHashHistory(),
-    // mode: 'history', // require service support
-    scrollBehavior: () => ({ top: 0 }),
-    routes: constantRoutes,
+    scrollBehavior: () => ({ left: 0, top: 0 }),
+    routes: (constantRoutes as unknown) as RouteRecordRaw[],
   });
 
 let router = _createRouter();

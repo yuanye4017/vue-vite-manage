@@ -15,7 +15,7 @@ export interface UserInfo {
   roles: string[];
 }
 
-export function getInfo(token: string) {
+export function getInfo(token: string | undefined) {
   return request<UserInfo>({
     url: '/vue-admin-template/user/info',
     method: 'get',

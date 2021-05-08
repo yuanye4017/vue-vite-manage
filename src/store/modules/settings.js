@@ -1,4 +1,4 @@
-import * as defaultSettings from '@/settings'
+import defaultSettings from '@/settings'
 
 const { showSettings, fixedHeader, sidebarLogo } = defaultSettings
 

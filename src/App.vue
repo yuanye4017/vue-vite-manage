@@ -1,21 +1,19 @@
 <template>
   <div id="app">
-<router-view />
+    <router-view />
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  export default {
+    name: 'App',
+  };
 </script>
 
-
 <style>
-.sub-el-icon {
-  color: currentColor;
-  width: 1em;
-  height: 1em;
-}
-
+  .sub-el-icon {
+    width: 1em;
+    height: 1em;
+    color: currentColor;
+  }
 </style>

@@ -16,33 +16,34 @@
 </template>
 
 <script>
-import { defineComponent } from "vue"
+  import { defineComponent } from 'vue';
 
-export default defineComponent({
-  name: 'Hamburger',
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false
-    }
-  },
-  methods: {
-    toggleClick() {
-      this.$emit('toggleClick')
-    }
-  }
-})
+  export default defineComponent({
+    name: 'Hamburger',
+    props: {
+      isActive: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    emits: ['toggleClick'],
+    methods: {
+      toggleClick() {
+        this.$emit('toggleClick');
+      },
+    },
+  });
 </script>
 
 <style scoped>
-.hamburger {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
-}
+  .hamburger {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+  }
 
-.hamburger.is-active {
-  transform: rotate(180deg);
-}
+  .hamburger.is-active {
+    transform: rotate(180deg);
+  }
 </style>

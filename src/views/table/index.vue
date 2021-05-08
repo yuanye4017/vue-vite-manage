@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="Display_time" width="200">
         <template #="scope">
-          <i class="el-icon-time" />
+          <i class="el-icon-time"></i>
           <span>{{ scope.row.display_time }}</span>
         </template>
       </el-table-column>
@@ -38,35 +38,34 @@
 </template>
 
 <script lang="ts">
-import { getList, Item } from '@/api/table'
-import { defineComponent, ref } from 'vue'
+  import { getList, Item } from '@/api/table';
+  import { defineComponent, ref } from 'vue';
 
-export default defineComponent({
-  setup() {
-    const list = ref<Item[]>([])
-    const listLoading = ref(true)
+  export default defineComponent({
+    setup() {
+      const list = ref<Item[]>([]);
+      const listLoading = ref(true);
 
-    function fetchData() {
-      listLoading.value = true
-      getList().then(response => {
-        list.value = response.data.items
-        listLoading.value = false
-      })
-    }
-
-    fetchData()
-
-    function statusFilter(status: 'published' | 'draft' | 'deleted') {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
+      function fetchData() {
+        listLoading.value = true;
+        getList().then((response) => {
+          list.value = response.data.items;
+          listLoading.value = false;
+        });
       }
-      return statusMap[status]
-    }
 
-    return { list, listLoading, statusFilter }
+      fetchData();
 
-  }
-})
+      function statusFilter(status: 'published' | 'draft' | 'deleted') {
+        const statusMap = {
+          published: 'success',
+          draft: 'gray',
+          deleted: 'danger',
+        };
+        return statusMap[status];
+      }
+
+      return { list, listLoading, statusFilter };
+    },
+  });
 </script>

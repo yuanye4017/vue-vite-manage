@@ -42,16 +42,14 @@
   import { isExternal } from '@/utils/validate';
   import Item from './Item';
   import AppLink from './Link.vue';
-  import FixiOSBug from './FixiOSBug';
+  import { useFixiOSBug } from '../../hooks/useFixiOSBug';
   import { defineComponent, PropType, ref } from 'vue';
   import { RouteRecordRaw } from 'vue-router';
 
   export default defineComponent({
     name: 'SidebarItem',
     components: { Item, AppLink },
-    mixins: [FixiOSBug],
     props: {
-      // route object
       item: {
         type: Object as PropType<RouteRecordRaw>,
         required: true,
@@ -66,17 +64,15 @@
       },
     },
     setup(props) {
-      // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-      // TODO: refactor with render function
-
+      const subMenu = ref(null);
       const onlyOneChild = ref<RouteRecordRaw>({} as any);
+      useFixiOSBug(subMenu.value);
 
       function hasOneShowingChild(children: RouteRecordRaw[] = [], parent: RouteRecordRaw) {
         const showingChildren = children.filter((item) => {
           if (item.hidden) {
             return false;
           } else {
-            // Temp set(will be used if only has one showing child)
             onlyOneChild.value = item;
             return true;
           }
@@ -105,7 +101,7 @@
         }
         return path.resolve(props.basePath, routePath);
       }
-      return { hasOneShowingChild, resolvePath, onlyOneChild };
+      return { hasOneShowingChild, resolvePath, onlyOneChild, subMenu };
     },
   });
 </script>

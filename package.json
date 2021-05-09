@@ -17,6 +17,7 @@
     "axios": "^0.21.1",
     "element-plus": "^1.0.2-beta.36",
     "js-cookie": "^2.2.1",
+    "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "path-browserify": "^1.0.1",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^2.2.6",
+    "@types/lodash-es": "^4.17.4",
     "@types/nprogress": "^0.2.0",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",

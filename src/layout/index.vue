@@ -1,10 +1,9 @@
 <template>
-  <div :class="classObj" class="app-wrapper">
-    <div
-      v-if="device === 'mobile' && sidebar.opened"
-      class="drawer-bg"
-      @click="handleClickOutside"
-    ></div>
+  <div :class="classObj"
+       class="app-wrapper">
+    <div v-if="device === 'mobile' && sidebar.opened"
+         class="drawer-bg"
+         @click="handleClickOutside"></div>
     <sidebar class="sidebar-container" />
     <div class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
@@ -14,87 +13,89 @@
     </div>
   </div>
 </template>
+<script lang="ts">
+import { computed, defineComponent } from 'vue';
+import { Navbar, Sidebar, AppMain } from './components';
+import { useStore } from 'vuex';
+import { useWindowSize } from './hooks/useWindowSize';
 
-<script>
-  import { Navbar, Sidebar, AppMain } from './components';
-  import ResizeMixin from './mixin/ResizeHandler';
-
-  export default {
-    name: 'Layout',
-    components: {
-      Navbar,
-      Sidebar,
-      AppMain,
-    },
-    mixins: [ResizeMixin],
-    computed: {
-      sidebar() {
-        return this.$store.state.app.sidebar;
-      },
-      device() {
-        return this.$store.state.app.device;
-      },
-      fixedHeader() {
-        return this.$store.state.settings.fixedHeader;
-      },
-      classObj() {
-        return {
-          hideSidebar: !this.sidebar.opened,
-          openSidebar: this.sidebar.opened,
-          withoutAnimation: this.sidebar.withoutAnimation,
-          mobile: this.device === 'mobile',
-        };
-      },
-    },
-    methods: {
-      handleClickOutside() {
-        this.$store.dispatch('app/closeSideBar', { withoutAnimation: false });
-      },
-    },
-  };
+export default defineComponent({
+  name: 'Layout',
+  components: {
+    Navbar,
+    Sidebar,
+    AppMain,
+  },
+  // mixins: [ResizeMixin],
+  setup() {
+    const store = useStore();
+    const sidebar = computed(() => store.state.app.sidebar);
+    const device = computed(() => store.state.app.device);
+    const fixedHeader = computed(() => store.state.settings.fixedHeader);
+    const classObj = computed(() => {
+      return {
+        hideSidebar: !sidebar.value.opened,
+        openSidebar: sidebar.value.opened,
+        withoutAnimation: sidebar.value.withoutAnimation,
+        mobile: device.value === 'mobile',
+      };
+    });
+    useWindowSize(device.value, sidebar.value);
+    function handleClickOutside() {
+      store.dispatch('app/closeSideBar', { withoutAnimation: false });
+    }
+    return {
+      sidebar,
+      device,
+      fixedHeader,
+      classObj,
+      handleClickOutside
+    };
+  },
+});
 </script>
 
 <style lang="scss" scoped>
-  @import '../styles/variables.scss';
-  @import '../styles/mixin.scss';
+@import '../styles/variables.scss';
+@import '../styles/mixin.scss';
 
-  .app-wrapper {
-    @include clearfix;
+.app-wrapper {
+  @include clearfix;
 
-    position: relative;
-    width: 100%;
-    height: 100%;
+  position: relative;
+  width: 100%;
+  height: 100%;
 
-    &.mobile.openSidebar {
-      position: fixed;
-      top: 0;
-    }
-  }
-
-  .drawer-bg {
-    position: absolute;
-    top: 0;
-    z-index: 999;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0.3;
-  }
-
-  .fixed-header {
+  &.mobile.openSidebar {
     position: fixed;
     top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$sideBarWidth});
-    transition: width 0.28s;
   }
+}
 
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px);
-  }
+.drawer-bg {
+  position: absolute;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0.3;
+}
 
-  .mobile .fixed-header {
-    width: 100%;
-  }
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: calc(100% - #{$sideBarWidth});
+  transition: width 0.28s;
+}
+
+.hideSidebar .fixed-header {
+  width: calc(100% - 54px);
+}
+
+.mobile .fixed-header {
+  width: 100%;
+}
 </style>

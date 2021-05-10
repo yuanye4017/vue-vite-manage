@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 import type { RootState } from '../index';
 import { ActionContext } from 'vuex';
 
@@ -11,24 +10,18 @@ type ActionContextType = ActionContext<AppState, RootState>;
 
 const state: AppState = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') === '1' ? false : true,
+    opened: true,
     withoutAnimation: false,
   },
   device: 'desktop',
 };
 
 const mutations = {
-  TOGGLE_SIDEBAR: (state: AppState) => {
-    state.sidebar.opened = !state.sidebar.opened;
+  TOGGLE_SIDEBAR: (state: AppState, opened: boolean) => {
+    state.sidebar.opened = opened;
     state.sidebar.withoutAnimation = false;
-    if (state.sidebar.opened) {
-      Cookies.set('sidebarStatus', '1');
-    } else {
-      Cookies.set('sidebarStatus', '0');
-    }
   },
   CLOSE_SIDEBAR: (state: AppState, withoutAnimation: boolean) => {
-    Cookies.set('sidebarStatus', '0');
     state.sidebar.opened = false;
     state.sidebar.withoutAnimation = withoutAnimation;
   },
@@ -38,8 +31,8 @@ const mutations = {
 };
 
 const actions = {
-  toggleSideBar({ commit }: ActionContextType) {
-    commit('TOGGLE_SIDEBAR');
+  toggleSideBar({ commit }: ActionContextType, opened: boolean) {
+    commit('TOGGLE_SIDEBAR', opened);
   },
   closeSideBar({ commit }: ActionContextType, { withoutAnimation }: AppState['sidebar']) {
     commit('CLOSE_SIDEBAR', withoutAnimation);

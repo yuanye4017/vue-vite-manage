@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, watch, ref } from 'vue';
+import { onMounted, onUnmounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import { debounce } from 'lodash-es';
@@ -11,20 +11,21 @@ type WindowSizeType = {
 };
 
 const { body } = document;
-const WIDTH = 992; // refer to Bootstrap's responsive design
+const WIDTH_MOBILE = 992; // modile
+const WIDTH_MIX = 1440; // min width
 
 export function useWindowSize(
   device: WindowSizeType['device'],
   sidebar: WindowSizeType['sidebar']
 ) {
-  const width = ref(0);
-  const height = ref(0);
   const route = useRoute();
   const store = useStore();
 
-  const $_isMobile = () => {
+  const $_windowInfo = () => {
     const rect = body.getBoundingClientRect();
-    return rect.width - 1 < WIDTH;
+    const winWidth = rect.width * 1;
+    const isMobile = winWidth - 1 < WIDTH_MOBILE;
+    return [isMobile, winWidth];
   };
 
   watch(
@@ -37,20 +38,24 @@ export function useWindowSize(
   );
 
   const onResize = debounce(function () {
-    width.value = window.innerWidth;
-    height.value = window.innerHeight;
     if (!document.hidden) {
-      const isMobile = $_isMobile();
+      const [isMobile, winWidth] = $_windowInfo();
       store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop');
 
       if (isMobile) {
         store.dispatch('app/closeSideBar', { withoutAnimation: true });
+      } else {
+        if (winWidth < WIDTH_MIX) {
+          store.dispatch('app/toggleSideBar', false);
+        } else {
+          store.dispatch('app/toggleSideBar', true);
+        }
       }
     }
   }, 150);
 
   onMounted(() => {
-    const isMobile = $_isMobile();
+    const [isMobile] = $_windowInfo();
     if (isMobile) {
       store.dispatch('app/toggleDevice', 'mobile');
       store.dispatch('app/closeSideBar', { withoutAnimation: true });
@@ -63,7 +68,6 @@ export function useWindowSize(
     window.removeEventListener('resize', onResize);
   });
   return {
-    width,
-    height,
+    onResize,
   };
 }

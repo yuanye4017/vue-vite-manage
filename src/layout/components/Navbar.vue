@@ -36,7 +36,7 @@
   import { useStore } from 'vuex';
   import Breadcrumb from '@/components/Breadcrumb/index.vue';
   import Hamburger from '@/components/Hamburger/index.vue';
-  import { defineComponent } from 'vue';
+  import { computed, defineComponent, unref } from 'vue';
   import { useMapGetters } from '@/utils/store';
   import { useRoute, useRouter } from 'vue-router';
 
@@ -49,10 +49,11 @@
       const store = useStore();
       const route = useRoute();
       const router = useRouter();
+      const opened = computed(() => store.getters.sidebar.opened);
       return {
         ...useMapGetters(['sidebar', 'avatar']),
         toggleSideBar() {
-          store.dispatch('app/toggleSideBar');
+          store.dispatch('app/toggleSideBar', !unref(opened));
         },
         async logout() {
           await store.dispatch('user/logout');

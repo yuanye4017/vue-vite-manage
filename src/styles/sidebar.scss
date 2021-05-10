@@ -1,24 +1,24 @@
 #app {
 
   .main-container {
-    min-height: 100%;
-    transition: margin-left .28s;
-    margin-left: $sideBarWidth;
     position: relative;
+    min-height: 100%;
+    margin-left: $sideBarWidth;
+    transition: margin-left .28s;
   }
 
   .sidebar-container {
-    transition: width 0.28s;
-    width: $sideBarWidth !important;
-    background-color: $menuBg;
-    height: 100%;
     position: fixed;
-    font-size: 0px;
     top: 0;
     bottom: 0;
     left: 0;
     z-index: 1001;
+    width: $sideBarWidth !important;
+    height: 100%;
     overflow: hidden;
+    font-size: 0;
+    background-color: $menuBg;
+    transition: width 0.28s;
 
     // reset element-plus css
     .horizontal-collapse-transition {
@@ -30,7 +30,7 @@
     }
 
     .el-scrollbar__bar.is-vertical {
-      right: 0px;
+      right: 0;
     }
 
     .el-scrollbar {
@@ -63,9 +63,9 @@
     }
 
     .el-menu {
-      border: none;
-      height: 100%;
       width: 100% !important;
+      height: 100%;
+      border: none;
     }
 
     // menu hover
@@ -101,8 +101,8 @@
     }
 
     .submenu-title-noDropdown {
-      padding: 0 !important;
       position: relative;
+      padding: 0 !important;
 
       .el-tooltip {
         padding: 0 !important;
@@ -141,11 +141,11 @@
       .el-submenu {
         &>.el-submenu__title {
           &>span {
-            height: 0;
+            display: inline-block;
             width: 0;
+            height: 0;
             overflow: hidden;
             visibility: hidden;
-            display: inline-block;
           }
         }
       }
@@ -159,19 +159,19 @@
   // mobile responsive
   .mobile {
     .main-container {
-      margin-left: 0px;
+      margin-left: 0;
     }
 
     .sidebar-container {
-      transition: transform .28s;
       width: $sideBarWidth !important;
+      transition: transform .28s;
     }
 
     &.hideSidebar {
       .sidebar-container {
         pointer-events: none;
-        transition-duration: 0.3s;
         transform: translate3d(-$sideBarWidth, 0, 0);
+        transition-duration: 0.3s;
       }
     }
   }
@@ -191,6 +191,7 @@
     .svg-icon {
       margin-right: 16px;
     }
+
     .sub-el-icon {
       margin-right: 12px;
       margin-left: -5px;

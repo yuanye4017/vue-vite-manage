@@ -57,7 +57,7 @@ export function parseTime(time: Date | string | number, cFormat: string): string
  */
 export function formatTime(time: number | string, option: string): string | null {
   if (('' + time).length === 10) {
-    time = typeof time === 'string' ?  parseInt(time) * 1000 : time * 1000;
+    time = typeof time === 'string' ? parseInt(time) * 1000 : time * 1000;
   } else {
     time = +time;
   }

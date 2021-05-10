@@ -72,6 +72,5 @@ module.exports = {
         math: 'always',
       },
     ],
-    'prettier/prettier': 'off',
   },
 };

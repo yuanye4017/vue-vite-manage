@@ -1,5 +1,5 @@
 import type { AppRouteModule } from './types';
-import type { RouteRecordRaw } from "vue-router";
+import type { RouteRecordRaw } from 'vue-router';
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 /* Layout */
@@ -152,14 +152,14 @@ export const constantRoutes: AppRouteModule[] = [
   },
 
   // 404 page must be placed at the end !!!
-  { path: '/:pathMatch(.*)*',name: 'PathMatch', redirect: '/404' },
+  { path: '/:pathMatch(.*)*', name: 'PathMatch', redirect: '/404' },
 ];
 
 const _createRouter = () =>
   createRouter({
     history: createWebHashHistory(),
     scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes: (constantRoutes as unknown) as RouteRecordRaw[],
+    routes: constantRoutes as unknown as RouteRecordRaw[],
   });
 
 let router = _createRouter();

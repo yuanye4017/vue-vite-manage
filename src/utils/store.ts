@@ -10,5 +10,5 @@ export function useMapGetters<T extends string>(keys: T[]) {
     }
   });
 
-  return (res as any) as Record<T, ComputedRef>;
+  return res as any as Record<T, ComputedRef>;
 }

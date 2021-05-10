@@ -11,7 +11,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Activity time">
-        <div style="display: flex;">
+        <div style="display: flex">
           <el-date-picker v-model="form.date1" type="date" placeholder="Pick a date" />
           <div class="line">-</div>
           <el-time-picker v-model="form.date2" type="fixed-time" placeholder="Pick a time" />

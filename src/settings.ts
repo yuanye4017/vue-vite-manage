@@ -1,5 +1,4 @@
 export default {
-
   title: 'Vue Admin Template',
   showSettings: true,
   /**
@@ -12,5 +11,5 @@ export default {
    * @type {boolean} true | false
    * @description Whether show the logo in sidebar
    */
-  sidebarLogo: true
-}
+  sidebarLogo: true,
+};

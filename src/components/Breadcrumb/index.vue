@@ -39,10 +39,10 @@
 
         if (!isDashboard(first)) {
           matched = [
-            ({
+            {
               path: '/dashboard',
               meta: { title: 'Dashboard' },
-            } as unknown) as RouteLocationMatched,
+            } as unknown as RouteLocationMatched,
           ].concat(matched);
         }
         levelList.value = matched.filter(

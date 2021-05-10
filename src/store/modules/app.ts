@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import type { RootState } from '../index'
+import type { RootState } from '../index';
 import { ActionContext } from 'vuex';
 
 export type AppState = {

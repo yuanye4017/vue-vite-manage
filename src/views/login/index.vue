@@ -50,13 +50,13 @@
       <el-button
         :loading="loading"
         type="primary"
-        style="width: 100%; margin-bottom: 30px;"
+        style="width: 100%; margin-bottom: 30px"
         @click.prevent="handleLogin"
         >Login</el-button
       >
 
       <div class="tips">
-        <span style="margin-right: 20px;">username: admin</span>
+        <span style="margin-right: 20px">username: admin</span>
         <span>password: any</span>
       </div>
     </el-form>
@@ -79,7 +79,11 @@
         password: '111111',
       });
 
-      const validateUsername = (_: Rules, value: string, callback: (error: string | string[] | void) => void,) => {
+      const validateUsername = (
+        _: Rules,
+        value: string,
+        callback: (error: string | string[] | void) => void
+      ) => {
         if (!validUsername(value)) {
           callback('Please enter the correct user name');
         } else {
@@ -87,7 +91,11 @@
         }
       };
 
-      const validatePassword = (_: Rules, value: string|any[], callback: (error: string | string[] | void) => void) => {
+      const validatePassword = (
+        _: Rules,
+        value: string | any[],
+        callback: (error: string | string[] | void) => void
+      ) => {
         if (value.length < 6) {
           callback('The password can not be less than 6 digits');
         } else {

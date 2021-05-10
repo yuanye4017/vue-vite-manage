@@ -23,7 +23,7 @@
               <el-dropdown-item>Github</el-dropdown-item>
             </a>
             <el-dropdown-item divided @click="logout">
-              <span style="display: block;">Log Out</span>
+              <span style="display: block">Log Out</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>

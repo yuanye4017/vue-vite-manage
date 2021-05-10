@@ -8,6 +8,7 @@ export type UserState = {
   token: string | undefined;
   name: string;
   avatar: string;
+  roles: string[] | undefined;
 };
 
 type UserInfoType = {
@@ -22,14 +23,11 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
+    roles: []
   };
 };
 
-const state: UserState = {
-  token: getToken(),
-  name: '',
-  avatar: '',
-};
+const state: UserState = getDefaultState();
 
 const mutations = {
   RESET_STATE: (state: UserState) => {
@@ -43,6 +41,9 @@ const mutations = {
   },
   SET_AVATAR: (state: UserState, avatar: string) => {
     state.avatar = avatar;
+  },
+  SET_ROLES: (state: UserState, roles: string[]) => {
+    state.roles = roles;
   },
 };
 
@@ -75,10 +76,11 @@ const actions = {
             return reject('Verification failed, please Login again.');
           }
 
-          const { name, avatar } = data;
+          const { name, avatar, roles } = data;
 
           commit('SET_NAME', name);
           commit('SET_AVATAR', avatar);
+          commit('SET_ROLES', roles);
           resolve(data);
         })
         .catch((error) => {

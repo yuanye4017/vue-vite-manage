@@ -1,4 +1,6 @@
 import router from './router';
+import { AppRouteModule } from './router/types';
+import type { RouteRecordRaw } from 'vue-router';
 import store from './store';
 import { ElMessage } from 'element-plus';
 import NProgress from 'nprogress'; // progress bar
@@ -32,8 +34,12 @@ router.beforeEach(async (to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo');
-
+          const { roles } = await store.dispatch('user/getInfo');
+          // generate accessible routes map based on roles
+          const accessRoutes = await store.dispatch('permission/generateRoutes', roles);
+          accessRoutes.forEach((route: AppRouteModule) => {
+            router.addRoute(route as unknown as RouteRecordRaw);
+          });
           next();
         } catch (error) {
           // remove token and go to login page to re-login

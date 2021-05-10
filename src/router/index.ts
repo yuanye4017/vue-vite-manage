@@ -78,20 +78,6 @@ export const constantRoutes: AppRouteModule[] = [
       },
     ],
   },
-
-  {
-    path: '/form',
-    name: 'Form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index.vue'),
-        meta: { title: 'Form', icon: 'form' },
-      },
-    ],
-  },
   {
     path: '/nested',
     component: Layout,
@@ -155,18 +141,49 @@ export const constantRoutes: AppRouteModule[] = [
   { path: '/:pathMatch(.*)*', name: 'PathMatch', redirect: '/404' },
 ];
 
-const _createRouter = () =>
-  createRouter({
-    history: createWebHashHistory(),
-    scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes: constantRoutes as unknown as RouteRecordRaw[],
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+ */
+export const asyncRoutes = [
+  {
+    path: '/form',
+    name: 'Form',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Form',
+        component: () => import('@/views/form/index.vue'),
+        meta: {
+          title: 'Form',
+          icon: 'form',
+          roles: ['admin', 'editor'],
+        },
+      },
+    ],
+  },
+];
+
+/** [Login, Redirect] */
+const WHITE_NAME_LIST = ['Login', 'Redirect'];
+
+// app router
+const router = createRouter({
+  history: createWebHashHistory(), // history模式
+  routes: constantRoutes as unknown as RouteRecordRaw[], // 路由数组
+  strict: true, // 严格模式
+  scrollBehavior: () => ({ left: 0, top: 0 }), // 切换滚动到顶部
+});
+
+// resetRouter用来删除路由，然后在addRoute把路由加进去
+export function resetRouter(): void {
+  router.getRoutes().forEach((route) => {
+    const { name } = route;
+    if (name && !WHITE_NAME_LIST.includes(name as string)) {
+      router.hasRoute(name) && router.removeRoute(name);
+    }
   });
-
-let router = _createRouter();
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  router = _createRouter();
 }
 
 export default router;

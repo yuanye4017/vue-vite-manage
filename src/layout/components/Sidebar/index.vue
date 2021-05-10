@@ -24,33 +24,33 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import Logo from './Logo.vue'
-import SidebarItem from './SidebarItem.vue'
+  import { computed, defineComponent } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
+  import { useStore } from 'vuex';
+  import Logo from './Logo.vue';
+  import SidebarItem from './SidebarItem.vue';
 
-export default defineComponent({
-  components: { SidebarItem, Logo },
-  setup() {
-    const router = useRouter()
-    const store = useStore()
-    const route = useRoute()
-    const activeMenu = computed(() => {
-      const { meta, path } = route
-      // if set path, the sidebar will highlight the path you set
-      if (meta.activeMenu) {
-        return meta.activeMenu
-      }
-      return path
-    })
+  export default defineComponent({
+    components: { SidebarItem, Logo },
+    setup() {
+      const router = useRouter();
+      const store = useStore();
+      const route = useRoute();
+      const activeMenu = computed(() => {
+        const { meta, path } = route;
+        // if set path, the sidebar will highlight the path you set
+        if (meta.activeMenu) {
+          return meta.activeMenu;
+        }
+        return path;
+      });
 
-    return {
-      routes: computed(() => router.options.routes),
-      activeMenu,
-      showLogo: computed(() => store.state.settings.sidebarLogo),
-      isCollapse: computed(() => !store.getters.sidebar.opened)
-    }
-  }
-})
+      return {
+        routes: computed(() => router.options.routes),
+        activeMenu,
+        showLogo: computed(() => store.state.settings.sidebarLogo),
+        isCollapse: computed(() => !store.getters.sidebar.opened),
+      };
+    },
+  });
 </script>

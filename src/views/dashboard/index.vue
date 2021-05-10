@@ -5,26 +5,25 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue';
-import { mapGetters } from 'vuex'
-export default defineComponent({
-  name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
-  }
-})
+  import { defineComponent } from 'vue';
+  import { mapGetters } from 'vuex';
+  export default defineComponent({
+    name: 'Dashboard',
+    computed: {
+      ...mapGetters(['name']),
+    },
+  });
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
+  .dashboard {
+    &-container {
+      margin: 30px;
+    }
+
+    &-text {
+      font-size: 30px;
+      line-height: 46px;
+    }
   }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
 </style>

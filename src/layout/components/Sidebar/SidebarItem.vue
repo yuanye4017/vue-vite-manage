@@ -1,7 +1,11 @@
 <template>
   <div v-if="!item.hidden">
     <template
-      v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow"
+      v-if="
+        hasOneShowingChild(item.children, item) &&
+        (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
+        !item.alwaysShow
+      "
     >
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item
@@ -34,74 +38,70 @@
 </template>
 
 <script lang="ts">
-import path from 'path'
-import { isExternal } from '@/utils/validate'
-import Item from './Item'
-import AppLink from './Link.vue'
-import FixiOSBug from './FixiOSBug'
-import { defineComponent, PropType, ref } from 'vue'
-import { RouteRecordRaw } from 'vue-router'
+  import path from 'path';
+  import { isExternal } from '@/utils/validate';
+  import Item from './Item';
+  import AppLink from './Link.vue';
+  import { useFixiOSBug } from '../../hooks/useFixiOSBug';
+  import { defineComponent, PropType, ref } from 'vue';
+  import { RouteRecordRaw } from 'vue-router';
 
-export default defineComponent({
-  name: 'SidebarItem',
-  components: { Item, AppLink },
-  mixins: [FixiOSBug],
-  props: {
-    // route object
-    item: {
-      type: Object as PropType<RouteRecordRaw>,
-      required: true
+  export default defineComponent({
+    name: 'SidebarItem',
+    components: { Item, AppLink },
+    props: {
+      item: {
+        type: Object as PropType<RouteRecordRaw>,
+        required: true,
+      },
+      isNest: {
+        type: Boolean,
+        default: false,
+      },
+      basePath: {
+        type: String,
+        default: '',
+      },
     },
-    isNest: {
-      type: Boolean,
-      default: false
-    },
-    basePath: {
-      type: String,
-      default: ''
-    }
-  },
-  setup(props) {
-    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-    // TODO: refactor with render function
+    setup(props) {
+      const subMenu = ref(null);
+      const onlyOneChild = ref<RouteRecordRaw>({} as any);
+      useFixiOSBug(subMenu.value);
 
-    const onlyOneChild = ref<RouteRecordRaw>({} as any)
+      function hasOneShowingChild(children: RouteRecordRaw[] = [], parent: RouteRecordRaw) {
+        const showingChildren = children.filter((item) => {
+          if (item.hidden) {
+            return false;
+          } else {
+            onlyOneChild.value = item;
+            return true;
+          }
+        });
 
-    function hasOneShowingChild(children: RouteRecordRaw[] = [], parent: RouteRecordRaw) {
-      const showingChildren = children.filter(item => {
-        if (item.hidden) {
-          return false
-        } else {
-          // Temp set(will be used if only has one showing child)
-          onlyOneChild.value = item
-          return true
+        // When there is only one child router, the child router is displayed by default
+        if (showingChildren.length === 1) {
+          return true;
         }
-      })
 
-      // When there is only one child router, the child router is displayed by default
-      if (showingChildren.length === 1) {
-        return true
+        // Show parent if there are no child router to display
+        if (showingChildren.length === 0) {
+          onlyOneChild.value = { ...parent, path: '', noShowingChildren: true };
+          return true;
+        }
+
+        return false;
       }
 
-      // Show parent if there are no child router to display
-      if (showingChildren.length === 0) {
-        onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
-        return true
+      function resolvePath(routePath: string) {
+        if (isExternal(routePath)) {
+          return routePath;
+        }
+        if (isExternal(props.basePath)) {
+          return props.basePath;
+        }
+        return path.resolve(props.basePath, routePath);
       }
-
-      return false
-    }
-
-    function resolvePath(routePath: string) {
-      if (isExternal(routePath)) {
-        return routePath
-      }
-      if (isExternal(props.basePath)) {
-        return props.basePath
-      }
-      return path.resolve(props.basePath, routePath)
-    }
-    return { hasOneShowingChild, resolvePath, onlyOneChild }
-  }
-})
+      return { hasOneShowingChild, resolvePath, onlyOneChild, subMenu };
+    },
+  });
 </script>

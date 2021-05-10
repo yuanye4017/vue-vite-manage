@@ -46,46 +46,44 @@
 </template>
 
 <script lang="ts">
+  import { ElMessage } from 'element-plus';
+  import { defineComponent, ref } from 'vue';
 
-import { ElMessage } from "element-plus"
-import { defineComponent, ref } from "vue"
+  export default defineComponent({
+    setup() {
+      const form = ref({
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: '',
+      });
+      function onSubmit() {
+        ElMessage('submit!');
+      }
 
-export default defineComponent({
-  setup() {
-    const form = ref({
-      name: '',
-      region: '',
-      date1: '',
-      date2: '',
-      delivery: false,
-      type: [],
-      resource: '',
-      desc: ''
-    })
-    function onSubmit() {
-      ElMessage('submit!')
-    }
+      function onCancel() {
+        ElMessage({
+          message: 'cancel!',
+          type: 'warning',
+        });
+      }
 
-    function onCancel() {
-      ElMessage({
-        message: 'cancel!',
-        type: 'warning'
-      })
-    }
-
-    return {
-      form,
-      onSubmit,
-      onCancel
-    }
-  }
-})
+      return {
+        form,
+        onSubmit,
+        onCancel,
+      };
+    },
+  });
 </script>
 
 <style scoped>
-.line {
-  margin: 0 18px;
-  text-align: center;
-}
+  .line {
+    margin: 0 18px;
+    text-align: center;
+  }
 </style>
-

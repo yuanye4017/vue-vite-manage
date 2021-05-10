@@ -1,8 +1,9 @@
-
-import { createRouter, createWebHashHistory } from 'vue-router'
+import type { AppRouteModule } from './types';
+import type { RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 /* Layout */
-import Layout from '@/layout/index.vue'
+import Layout from '@/layout/index.vue';
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -28,27 +29,32 @@ import Layout from '@/layout/index.vue'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
+export const constantRoutes: AppRouteModule[] = [
   {
     path: '/login',
+    name: 'Login',
     component: () => import('@/views/login/index.vue'),
   },
 
   {
     path: '/404',
+    name: 'Error',
     component: () => import('@/views/404.vue'),
   },
 
   {
     path: '/',
+    name: 'Dashboard',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index.vue'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index.vue'),
+        meta: { title: 'Dashboard', icon: 'dashboard' },
+      },
+    ],
   },
 
   {
@@ -62,28 +68,29 @@ export const constantRoutes = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index.vue'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: { title: 'Table', icon: 'table' },
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index.vue'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
+        meta: { title: 'Tree', icon: 'tree' },
+      },
+    ],
   },
 
   {
     path: '/form',
+    name: 'Form',
     component: Layout,
     children: [
       {
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index.vue'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
+        meta: { title: 'Form', icon: 'form' },
+      },
+    ],
   },
   {
     path: '/nested',
@@ -92,7 +99,7 @@ export const constantRoutes = [
     name: 'Nested',
     meta: {
       title: 'Nested',
-      icon: 'nested'
+      icon: 'nested',
     },
     children: [
       {
@@ -105,7 +112,7 @@ export const constantRoutes = [
             path: 'menu1-1',
             component: () => import('@/views/nested/menu1/menu1-1/index.vue'),
             name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            meta: { title: 'Menu1-1' },
           },
           {
             path: 'menu1-2',
@@ -117,60 +124,49 @@ export const constantRoutes = [
                 path: 'menu1-2-1',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1/index.vue'),
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
+                meta: { title: 'Menu1-2-1' },
               },
               {
                 path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2/index.vue'),
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
-              }
-            ]
+                meta: { title: 'Menu1-2-2' },
+              },
+            ],
           },
           {
             path: 'menu1-3',
             component: () => import('@/views/nested/menu1/menu1-3/index.vue'),
             name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
-          }
-        ]
+            meta: { title: 'Menu1-3' },
+          },
+        ],
       },
       {
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index.vue'),
         name: 'Menu2',
-        meta: { title: 'menu2' }
-      }
-    ]
-  },
-
-  {
-    path: '/external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/cereschen/vue3-admin-vite-template',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
+        meta: { title: 'menu2' },
+      },
+    ],
   },
 
   // 404 page must be placed at the end !!!
-  { path: '/:pathMatch(.*)*', redirect: '/404' }
-]
+  { path: '/:pathMatch(.*)*',name: 'PathMatch', redirect: '/404' },
+];
 
-const _createRouter = () => createRouter({
-  history: createWebHashHistory(),
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ top: 0 }),
-  routes: constantRoutes
-})
+const _createRouter = () =>
+  createRouter({
+    history: createWebHashHistory(),
+    scrollBehavior: () => ({ left: 0, top: 0 }),
+    routes: (constantRoutes as unknown) as RouteRecordRaw[],
+  });
 
-let router = _createRouter()
+let router = _createRouter();
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  router = _createRouter()
+  router = _createRouter();
 }
 
-export default router
+export default router;

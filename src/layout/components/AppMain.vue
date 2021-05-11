@@ -30,12 +30,13 @@
     width: 100%;
 
     /* 50 = navbar  */
-    min-height: calc(100vh - 50px);
+    min-height: 100vh;
     overflow: hidden;
   }
 
   .fixed-header + .app-main {
-    padding-top: 50px;
+    padding: 12px;
+    padding-top: 62px;
   }
 </style>
 

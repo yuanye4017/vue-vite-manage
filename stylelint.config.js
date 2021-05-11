@@ -33,6 +33,12 @@ module.exports = {
         ignore: ['after-comment', 'first-nested'],
       },
     ],
+    'selector-pseudo-element-no-unknown': [
+      true,
+      {
+        ignorePseudoElements: ['ng-deep'],
+      },
+    ],
     'unit-no-unknown': [true, { ignoreUnits: ['rpx'] }],
     // Specify the alphabetical order of the attributes in the declaration block
     'order/properties-order': [

@@ -1,29 +1,58 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+    <el-row class="card-row" :gutter="10">
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <card-list :loading="loading" />
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <card-list :loading="loading" />
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <card-list :loading="loading" />
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="6" :lg="6" :xl="6">
+        <card-list :loading="loading" />
+      </el-col>
+    </el-row>
+    <el-card style="margin-top: 12px">
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="销售额" name="first">销售额</el-tab-pane>
+        <el-tab-pane label="访问量" name="second">访问量</el-tab-pane>
+      </el-tabs>
+    </el-card>
   </div>
 </template>
 
 <script>
-  import { defineComponent } from 'vue';
-  import { mapGetters } from 'vuex';
+  import { defineComponent, onMounted, ref } from 'vue';
+  import CardList from './components/CardList.vue';
+
   export default defineComponent({
     name: 'Dashboard',
-    computed: {
-      ...mapGetters(['name']),
+    components: {
+      CardList,
+    },
+    setup() {
+      const loading = ref(true);
+      const activeName = ref('first');
+
+      onMounted(() => {
+        setTimeout(() => {
+          loading.value = false;
+        }, 2000);
+      });
+      return {
+        loading,
+        activeName,
+      };
     },
   });
 </script>
 
 <style lang="scss" scoped>
-  .dashboard {
-    &-container {
-      margin: 30px;
-    }
-
-    &-text {
-      font-size: 30px;
-      line-height: 46px;
+  .card-row {
+    .el-col {
+      margin-top: 10px;
     }
   }
 </style>

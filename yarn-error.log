@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js add typescriptprettier -D
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.10/libexec/bin/yarn.js add @antv/g2plo -S
 
 PATH: 
   /Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home/bin:/Users/yuanye/flutter/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home/bin:/Users/yuanye/flutter/bin:/usr/local/apache-maven-3.6.3/bin:/flutter/bin:.:/usr/local/apache-maven-3.6.3/bin:/flutter/bin:.
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: https://registry.npm.taobao.org/typescriptprettier: Not found
+  Error: https://registry.npm.taobao.org/@antv%2fg2plo: Not found
       at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:66988:18)
       at Request.self.callback (/usr/local/Cellar/yarn/1.22.10/libexec/lib/cli.js:140749:22)
       at Request.emit (events.js:315:20)
@@ -34,12 +34,19 @@ npm manifest:
     "scripts": {
       "dev": "vite",
       "build": "vite build",
-      "preview": "vite preview"
+      "preview": "vite preview",
+      "lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
+      "lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+      "lint:stylelint": "stylelint --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
+      "lint:ls-lint": "ls-lint",
+      "lint:lint-staged": "lint-staged -c ./.husky/lintstagedrc.js",
+      "lint:pretty": "pretty-quick --staged"
     },
     "dependencies": {
       "axios": "^0.21.1",
       "element-plus": "^1.0.2-beta.36",
       "js-cookie": "^2.2.1",
+      "lodash-es": "^4.17.21",
       "normalize.css": "^8.0.1",
       "nprogress": "^0.2.0",
       "path-browserify": "^1.0.1",
@@ -49,6 +56,9 @@ npm manifest:
       "vuex": "^4.0.0"
     },
     "devDependencies": {
+      "@types/js-cookie": "^2.2.6",
+      "@types/lodash-es": "^4.17.4",
+      "@types/nprogress": "^0.2.0",
       "@typescript-eslint/eslint-plugin": "^4.22.1",
       "@typescript-eslint/parser": "^4.22.1",
       "@vitejs/plugin-vue": "^1.2.0",
@@ -60,12 +70,13 @@ npm manifest:
       "eslint-plugin-vue": "^7.9.0",
       "mockjs": "^1.1.0",
       "postcss-import": "^14.0.0",
-      "prettier": "^2.2.1",
+      "prettier": "^2.3.0",
       "sass": "^1.32.8",
       "stylelint": "^13.13.1",
       "stylelint-config-prettier": "^8.0.2",
       "stylelint-config-standard": "^22.0.0",
       "stylelint-order": "^4.1.0",
+      "typescript": "^4.2.4",
       "vite": "^2.1.4",
       "vite-plugin-mock": "^2.5.0",
       "vite-plugin-svg-sprite-component": "^1.0.8"
@@ -360,12 +371,24 @@ Lockfile:
     resolved "https://registry.npm.taobao.org/@types/estree/download/@types/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
     integrity sha1-4Xfmme4bjCLSMXTKqnQiZEOJUJ8=
   
+  "@types/js-cookie@^2.2.6":
+    version "2.2.6"
+    resolved "https://registry.npm.taobao.org/@types/js-cookie/download/@types/js-cookie-2.2.6.tgz?cache=0&sync_timestamp=1613378918868&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fjs-cookie%2Fdownload%2F%40types%2Fjs-cookie-2.2.6.tgz#f1a1cb35aff47bc5cfb05cb0c441ca91e914c26f"
+    integrity sha1-8aHLNa/0e8XPsFywxEHKkekUwm8=
+  
   "@types/json-schema@^7.0.3":
     version "7.0.7"
     resolved "https://registry.npm.taobao.org/@types/json-schema/download/@types/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
     integrity sha1-mKmTUWyFnrDVxMjwmDF6nqaNua0=
   
-  "@types/lodash@^4.14.161":
+  "@types/lodash-es@^4.17.4":
+    version "4.17.4"
+    resolved "https://registry.npm.taobao.org/@types/lodash-es/download/@types/lodash-es-4.17.4.tgz#b2e440d2bf8a93584a9fd798452ec497986c9b97"
+    integrity sha1-suRA0r+Kk1hKn9eYRS7El5hsm5c=
+    dependencies:
+      "@types/lodash" "*"
+  
+  "@types/lodash@*", "@types/lodash@^4.14.161":
     version "4.14.168"
     resolved "https://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
     integrity sha1-/iRjLnm3rePxMoka//hsql5c4Ag=
@@ -396,6 +419,11 @@ Lockfile:
     version "2.4.0"
     resolved "https://registry.npm.taobao.org/@types/normalize-package-data/download/@types/normalize-package-data-2.4.0.tgz?cache=0&sync_timestamp=1613379350842&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnormalize-package-data%2Fdownload%2F%40types%2Fnormalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
     integrity sha1-5IbQ2XOW15vu3QpuM/RTT/a0lz4=
+  
+  "@types/nprogress@^0.2.0":
+    version "0.2.0"
+    resolved "https://registry.npm.taobao.org/@types/nprogress/download/@types/nprogress-0.2.0.tgz#86c593682d4199212a0509cc3c4d562bbbd6e45f"
+    integrity sha1-hsWTaC1BmSEqBQnMPE1WK7vW5F8=
   
   "@types/parse-json@^4.0.0":
     version "4.0.0"
@@ -1844,6 +1872,11 @@ Lockfile:
     dependencies:
       p-locate "^4.1.0"
   
+  lodash-es@^4.17.21:
+    version "4.17.21"
+    resolved "https://registry.npm.taobao.org/lodash-es/download/lodash-es-4.17.21.tgz?cache=0&sync_timestamp=1613835893273&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash-es%2Fdownload%2Flodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+    integrity sha1-Q+YmxG5lkbd1C+srUBFzkMYJ4+4=
+  
   lodash.camelcase@^4.3.0:
     version "4.3.0"
     resolved "https://registry.npm.taobao.org/lodash.camelcase/download/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
@@ -2382,10 +2415,10 @@ Lockfile:
     dependencies:
       fast-diff "^1.1.2"
   
-  prettier@^2.2.1:
-    version "2.2.1"
-    resolved "https://registry.npm.taobao.org/prettier/download/prettier-2.2.1.tgz?cache=0&sync_timestamp=1606523097359&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fprettier%2Fdownload%2Fprettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
-    integrity sha1-eVoaeN1S8HPaDNQrIfnJE4GSP/U=
+  prettier@^2.3.0:
+    version "2.3.0"
+    resolved "https://registry.nlark.com/prettier/download/prettier-2.3.0.tgz?cache=0&sync_timestamp=1620594183343&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fprettier%2Fdownload%2Fprettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
+    integrity sha1-tqW/EoQCauZA8X9/9WWKdWf8DRg=
   
   progress@^2.0.0:
     version "2.0.3"
@@ -2907,6 +2940,11 @@ Lockfile:
     integrity sha1-qX7nqf9CaRufeD/xvFES/j/KkIA=
     dependencies:
       is-typedarray "^1.0.0"
+  
+  typescript@^4.2.4:
+    version "4.2.4"
+    resolved "https://registry.nlark.com/typescript/download/typescript-4.2.4.tgz?cache=0&sync_timestamp=1620371948672&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftypescript%2Fdownload%2Ftypescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
+    integrity sha1-hhC1l0feAo/aiYqK7w4QPxVtCWE=
   
   unified@^9.1.0:
     version "9.2.1"

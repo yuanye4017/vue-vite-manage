@@ -15,9 +15,14 @@
       </el-col>
     </el-row>
     <el-card style="margin-top: 12px">
-      <el-tabs v-model="activeName">
-        <el-tab-pane label="销售额" name="first">销售额</el-tab-pane>
-        <el-tab-pane label="访问量" name="second">访问量</el-tab-pane>
+      <el-skeleton v-if="loading" animated />
+      <el-tabs v-else v-model="activeName">
+        <el-tab-pane label="销售额" name="销售额">
+          <tab-pane :title-name="activeName" />
+        </el-tab-pane>
+        <el-tab-pane label="访问量" name="访问量">
+          <tab-pane :title-name="activeName" />
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -26,21 +31,24 @@
 <script>
   import { defineComponent, onMounted, ref } from 'vue';
   import CardList from './components/CardList.vue';
+  import TabPane from './components/TabPane.vue';
 
   export default defineComponent({
     name: 'Dashboard',
     components: {
       CardList,
+      TabPane,
     },
     setup() {
       const loading = ref(true);
-      const activeName = ref('first');
+      const activeName = ref('销售额');
 
       onMounted(() => {
         setTimeout(() => {
           loading.value = false;
         }, 2000);
       });
+
       return {
         loading,
         activeName,
